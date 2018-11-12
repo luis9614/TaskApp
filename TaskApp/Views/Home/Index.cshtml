@@ -1,0 +1,104 @@
+﻿@model TaskView
+@{
+    ViewData["Title"] = "Home Page";
+}
+<br />
+<div class="container">
+    <div class="card" style="width: 54rem;">
+        <div class="card-header">
+            <h1>Info</h1> 
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"> Storage Info: @Model.System.GetDiskInfo()</li>
+            <li class="list-group-item"> System Fragmented Status: @Model.System.GetFragmentedInfo()</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+        </ul>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div>
+        <h2>
+            Current Tasks
+        </h2>
+    </div>
+    @if (Model.CurrentTasks.Tasks.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Task Duration</th>
+                    <th scope="col">Ongoing</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (IUserTasks task in Model.CurrentTasks.Tasks)
+                {
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>@task.TaskName</td>
+                        <td>@task.Duration</td>
+                        @if (task.IsExecuting)
+                        {
+                            <td>Yes</td>
+                        }
+                        else
+                        {
+                            <td>No</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else{
+    <h3>
+        Not running any task.
+    </h3>
+    }
+
+</div>
+
+<div class="container">
+    <div>
+        <h2>
+            Availiable Tasks
+        </h2>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Task Name</th>
+                <th scope="col">Task Duration</th>
+                <th scope="col">Ongoing</th>
+                <th scope="col"> Add</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (IUserTasks task in Model.AvailiableTasks)
+            {
+                <tr>
+                    <th scope="row">1</th>
+                    <td>@task.TaskName</td>
+                    <td>@task.Duration</td>
+                    @if (task.IsExecuting)
+                    {
+                        <td>Yes</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                    <td>
+                        <a class="btn btn-outline-dark" href="@Url.Action("AddTask", "Home", new { name = task.TaskName })"><i class="fas fa-plus"></i> Add <span class="sr-only">(current)</span></a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
