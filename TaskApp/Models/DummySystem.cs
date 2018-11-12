@@ -24,6 +24,7 @@ namespace TaskApp.Models
         {
             this.AvailiableSpace = 300;
             this.TotalSpace = 500;
+            this.NeedsDefrag = true;
         }
 
         public string GetDiskInfo(){

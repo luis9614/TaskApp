@@ -30,7 +30,9 @@ namespace TaskApp.Models
         private void CheckForCompletedTasks()
         {
             if(Tasks.Count > 0){
-                if (DateTime.Now.Subtract(Tasks[0].Duration) >= Tasks[0].StartedExecuting)
+                DateTime dt = DateTime.Now;
+                int state = DateTime.Compare(dt.Subtract(Tasks[0].Duration), Tasks[0].StartedExecuting);
+                if (state >=0)
                 {
                     Tasks.RemoveAt(0);
                 }
@@ -39,11 +41,12 @@ namespace TaskApp.Models
         }
         public void ExecuteTasks()
         {
-            CheckForCompletedTasks();
+
             if(Tasks.Count > 0 && !IsAnyActive()){
                 Tasks[0].Execute();
 
             }
+            CheckForCompletedTasks();
         }
     }
     public abstract class IUserTasks
@@ -89,7 +92,7 @@ namespace TaskApp.Models
         public DefragmentHD(DummySystem System) : base(System)
         {
             this.TaskName = " Defragmenting HDD";
-            this.Duration = TimeSpan.FromSeconds(5);
+            this.Duration = TimeSpan.FromSeconds(20);
             this.IsExecuting = false;
 
         }
